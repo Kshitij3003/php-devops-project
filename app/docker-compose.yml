@@ -1,9 +1,20 @@
-version: '2'
+version: '3.8'
+
 services:
   php:
     image: yiisoftware/yii2-php:7.4-apache
+    container_name: yii2-app
     volumes:
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./:/app:delegated
+      - ./:/app
     ports:
-      - '8000:80'
+      - "8080:80"
+
+  nginx:
+    image: nginx:1.18
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
